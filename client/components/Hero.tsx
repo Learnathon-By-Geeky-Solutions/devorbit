@@ -46,7 +46,6 @@ const ShuffleGrid = () => {
   const [squares, setSquares] = useState([]);
 
   useEffect(() => {
-    // Only shuffle on the client
     const shuffledData = shuffle([...squareData]);
     setSquares(shuffledData);
 
