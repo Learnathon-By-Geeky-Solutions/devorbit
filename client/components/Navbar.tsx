@@ -114,7 +114,11 @@ const Navbar = () => {
               />
             </motion.div>
           </div>
-          <Button variant="default" className="hidden lg:inline-flex px-7">
+          <Button
+            href="/sign-in"
+            variant="default"
+            className="hidden lg:inline-flex px-7"
+          >
             Sign In
           </Button>
           <Sheet>
