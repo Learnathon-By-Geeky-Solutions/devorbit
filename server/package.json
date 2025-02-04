@@ -21,11 +21,13 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-mongo-sanitize": "^2.2.0",
+    "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongo-sanitize": "^1.1.0",
     "mongoose": "^8.9.5",
     "nodemon": "^3.1.9",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "xss-clean": "^0.1.4"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

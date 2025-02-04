@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
 import ExpressMongoSanitize from 'express-mongo-sanitize';
+import helmet from 'helmet';
+
 import connectDB from './config/db';
 import authRouter from './modules/auth/auth.route';
 import errorHandler from './shared/middleware/error';
@@ -10,6 +12,8 @@ connectDB();
 
 app.use(express.json());
 app.use(ExpressMongoSanitize());
+app.use(helmet());
+app.use(xss);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello000 World!');

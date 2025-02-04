@@ -85,7 +85,7 @@ export const login = asyncHandler(
       return next(new ErrorResponse('Invalid credentials', 401));
     }
 
-    res.status(201).json({
+    res.status(200).json({
       success: true,
     });
   },
