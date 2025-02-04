@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from '../../shared/middleware/asyncHandler';
 import User, { UserDocument } from '../user/user.model';
+import authService from './auth.service';
 
 interface RegisterBody {
   first_name: string;
@@ -31,6 +32,9 @@ export const register = asyncHandler(
       password,
       role: role || 'user', // Default role
     });
+
+    const token = authService.generateToken(user);
+    console.log(token);
 
     // Remove password from response
     const userWithoutPassword = user.toObject();
