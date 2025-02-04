@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from '../../shared/middleware/asyncHandler';
+import ErrorResponse from '../../utils/errorResponce';
 import User, { UserDocument } from '../user/user.model';
 import authService from './auth.service';
 
@@ -9,6 +10,10 @@ interface RegisterBody {
   email: string;
   password: string;
   role?: string;
+}
+interface LoginBody {
+  email: string;
+  password: string;
 }
 
 /**
@@ -33,7 +38,7 @@ export const register = asyncHandler(
       role: role || 'user', // Default role
     });
 
-    const token = authService.generateToken(user);
+    const token = await authService.generateToken(user);
     console.log(token);
 
     // Remove password from response
@@ -43,7 +48,45 @@ export const register = asyncHandler(
     // 201 Created for successful registration
     res.status(201).json({
       success: true,
-      data: userWithoutPassword,
+      data: [userWithoutPassword, token],
+    });
+  },
+);
+
+/**
+ * @route   POST /api/v1/auth/login
+ * @desc    login a new user
+ * @access  Public
+ */
+export const login = asyncHandler(
+  async (
+    req: Request<{}, {}, LoginBody>,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    const { email, password } = req.body;
+
+    // Validate email and password
+    if (!email || !password) {
+      return next(
+        new ErrorResponse('Please Provide an email and password', 400),
+      );
+    }
+
+    const user = await User.findOne({ email }).select('+password');
+
+    if (!user) {
+      return next(new ErrorResponse('Invalid credentials', 401));
+    }
+    // check if password matches
+    const isMatched = await authService.matchPassword(password, user);
+
+    if (!isMatched) {
+      return next(new ErrorResponse('Invalid credentials', 401));
+    }
+
+    res.status(201).json({
+      success: true,
     });
   },
 );

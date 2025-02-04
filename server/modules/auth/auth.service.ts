@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import jwt, { SignOptions } from 'jsonwebtoken';
 import { UserDocument } from '../user/user.model';
 
@@ -28,8 +29,10 @@ class AuthService {
     );
   }
 
-  // You can add other authentication-related methods here
-  // like verifyToken, refreshToken, etc.
+  // match user entered password to hash password in database
+  public async matchPassword(enteredPassword: string, user: UserDocument) {
+    return await bcrypt.compare(enteredPassword, user.password);
+  }
 }
 
 export const authService = new AuthService();
